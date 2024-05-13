@@ -90,14 +90,14 @@
     {% endblock %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var projectTypeField = document.getElementById('id_project_type');
-            var widthAField = document.getElementById('id_width_a');
-            var widthBField = document.getElementById('id_width_b');
-            var widthCField = document.getElementById('id_width_c');
-            var widthDField = document.getElementById('id_width_d');
+            let projectTypeField = document.getElementById('id_project_type');
+            let widthAField = document.getElementById('id_width_a');
+            let widthBField = document.getElementById('id_width_b');
+            let widthCField = document.getElementById('id_width_c');
+            let widthDField = document.getElementById('id_width_d');
 
             function toggleWidthFields() {
-                var projectType = projectTypeField.value;
+                let projectType = projectTypeField.value;
                 if (projectType === 'СТЕНА') {
                     widthAField.style.display = 'block';
                     widthBField.style.display = 'none';

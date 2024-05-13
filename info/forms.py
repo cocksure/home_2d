@@ -55,7 +55,9 @@ class MaterialForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
 	class Meta:
 		model = Project
-		fields = '__all__'
+		fields = (
+			'name', 'firm', 'height', 'project_type', 'material', 'width_a', 'width_b', 'width_c', 'width_a',
+			'interior_walls', 'floor', 'baseboard')
 
 		labels = {
 			'name': '',
@@ -76,10 +78,15 @@ class ProjectForm(forms.ModelForm):
 			'firm': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Фирма'}),
 			'height': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Высота'}),
 			'project_type': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Тип проекта'}),
-			'width_a': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_width_a', 'placeholder': 'Ширина A'}),
-			'width_b': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_width_b', 'placeholder': 'Ширина B'}),
-			'width_c': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_width_c', 'placeholder': 'Ширина C'}),
-			'width_d': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_width_d', 'placeholder': 'Ширина D'}),
+			'material': forms.SelectMultiple(attrs={'class': 'form-select', 'placeholder': 'Материал'}),
+			'width_a': forms.NumberInput(
+				attrs={'class': 'form-control', 'id': 'id_width_a', 'placeholder': 'Ширина A'}),
+			'width_b': forms.NumberInput(
+				attrs={'class': 'form-control', 'id': 'id_width_b', 'placeholder': 'Ширина B'}),
+			'width_c': forms.NumberInput(
+				attrs={'class': 'form-control', 'id': 'id_width_c', 'placeholder': 'Ширина C'}),
+			'width_d': forms.NumberInput(
+				attrs={'class': 'form-control', 'id': 'id_width_d', 'placeholder': 'Ширина D'}),
 			'interior_walls': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
 			'external_walls': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
 			'floor': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),

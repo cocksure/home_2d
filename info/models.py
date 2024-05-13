@@ -60,5 +60,10 @@ class Project(models.Model):
 	floor = models.BooleanField(default=False, null=True, blank=True)
 	baseboard = models.BooleanField(default=False, null=True, blank=True)
 
+	material = models.ManyToManyField(Material, blank=True)
+	wall_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+	ROOM_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+	LIVING_ROOM_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
 	def __str__(self):
 		return str(self.name)
