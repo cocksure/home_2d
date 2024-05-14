@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from info.forms import FirmForm, GroupForm, UnitForm, MaterialForm, ProjectForm
+from info.forms import FirmForm, GroupForm, UnitForm, MaterialForm, ProjectForm, BrandForm
 from info.models import Firm, Group, Brand, Unit, Material, Project
 from shared.views import BaseListCreateView
 
@@ -25,7 +25,7 @@ class GroupListCreate(BaseListCreateView):
 
 class BrandListCreate(BaseListCreateView):
 	model = Brand
-	form_class = GroupForm
+	form_class = BrandForm
 	template_name = "brand_list_create.html"
 	redirect_url = "brand-list"
 

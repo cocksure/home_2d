@@ -55,9 +55,9 @@ class MaterialForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
 	class Meta:
 		model = Project
-		fields = (
-			'name', 'firm', 'height', 'project_type', 'material', 'width_a', 'width_b', 'width_c', 'width_a',
-			'interior_walls', 'floor', 'baseboard')
+		exclude = ['wall_area', 'ROOM_area', 'LIVING_ROOM_area']  # isklyuchit' polya iz formy
+
+		fields = '__all__'
 
 		labels = {
 			'name': '',

@@ -51,6 +51,8 @@ class Project(models.Model):
 	firm = models.ForeignKey(Firm, on_delete=models.CASCADE)
 	height = models.DecimalField(max_digits=10, decimal_places=2)
 	project_type = models.CharField(choices=ProjectType.choices, default=ProjectType.WALL, max_length=20)
+	material = models.ManyToManyField(Material, blank=True)
+
 	width_a = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 	width_b = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 	width_c = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -60,7 +62,6 @@ class Project(models.Model):
 	floor = models.BooleanField(default=False, null=True, blank=True)
 	baseboard = models.BooleanField(default=False, null=True, blank=True)
 
-	material = models.ManyToManyField(Material, blank=True)
 	wall_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 	ROOM_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 	LIVING_ROOM_area = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
