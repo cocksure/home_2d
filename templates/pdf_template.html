@@ -26,7 +26,7 @@
         }
 
         th {
-            background-color: #c8f5f3;
+            background-color: #cfefef;
         }
 
         h2 {
@@ -38,9 +38,10 @@
 
 </head>
 <body>
-<div class="container">
+<div>
     <h1>Объект плана: {{ project.name }}</h1>
     <img src="{{ project_plan_image }}" alt="Чертеж плана" class="plan-img">
+
     {% for detail in details %}
         <p>{{ detail }}</p>
     {% endfor %}
@@ -114,7 +115,7 @@
 
 
 
-    <h2>Материалы проекта</h2>
+    <h2 style="margin-top: 50px">Материалы проекта</h2>
     <table>
         <thead>
         <tr>

@@ -1,6 +1,8 @@
 from xhtml2pdf import pisa
 from io import BytesIO
-
+import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import matplotlib.image as mpimg
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
@@ -131,15 +133,23 @@ class ProjectDetailView(DetailView):
 		return context
 
 
-import matplotlib.pyplot as plt
-
-
 def create_pdf_view(request, pk):
 	project = Project.objects.get(pk=pk)
 	project_materials = project.project_materials.all()  # Получаем все связанные материалы
 
 	# Создаем чертеж с помощью Matplotlib
-	fig, ax = plt.subplots(figsize=(11.69, 8.27))  # A4 landscape
+	fig, ax = plt.subplots(figsize=(9.69, 10.27))  # A4 landscape
+
+	# Вставляем задний фон (логотип)
+	logo_path = 'static/img/logo.png'
+	img = mpimg.imread(logo_path)
+	imagebox = OffsetImage(img, zoom=0.2, alpha=0.3)  # Установка прозрачности
+
+	# Указываем координаты точки для левого нижнего угла изображения
+	x_offset = 2.6  # Сдвигаем вправо на 0.7 по x
+	y_offset = 1.9  # Оставляем на том же уровне по y
+	ab = AnnotationBbox(imagebox, (x_offset, y_offset), frameon=False)
+	ax.add_artist(ab)
 
 	# Рисуем только стены A и B
 	if project.width_a:
@@ -154,7 +164,7 @@ def create_pdf_view(request, pk):
 	ax.set_ylabel('Ширина, м')
 
 	# Сохраняем изображение на диск
-	img_path = f'/tmp/project_{pk}_plan.png'  # Путь к файлу
+	img_path = f'/tmp/project_{pk}_plan.png'
 	plt.savefig(img_path, format='png')
 	plt.close()
 
@@ -165,7 +175,8 @@ def create_pdf_view(request, pk):
 	context = {
 		'project': project,
 		'project_plan_image': img_path,
-		'project_materials': project_materials
+		'project_materials': project_materials,
+		'logo_path': logo_path,
 	}
 
 	# Загружаем HTML-шаблон
