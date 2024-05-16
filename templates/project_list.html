@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">Список объектов</h6>
+                    <hr>
+
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <form class="d-none d-md-flex mb-3" method="GET" action="{% url 'project-list' %}">
+                                <div class="input-group">
+                                    <input type="search" name="search" class="form-control border-0"
+                                           placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-secondary mx-3">Найти</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'project-create' %}" type="button" class="btn btn-primary">Создать</a>
+                        </div>
+                    </div>
+
+                    <!-- Table start -->
+                    <div class="table-responsive">
+
+                        <table class="table table-striped table-light text-center table-hover ">
+                            <thead>
+                            <tr>
+                                <th scope="col">Название</th>
+                                <th scope="col">Фирма</th>
+                                <th scope="col">Тип проекта</th>
+                                <th scope="col">Общая Площадь стены</th>
+                                <th scope="col">Действия</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for project in items %}
+                                <tr>
+                                    <td>{{ project.name }}</td>
+                                    <td>{{ project.firm }}</td>
+                                    <td>{{ project.project_type }}</td>
+                                    <td>{{ project.wall_area }}</td>
+                                    <td>
+                                        <a href="{% url 'project-detail' project.pk %}" type="button"
+                                           class="btn btn-primary btn-sm"><i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="#" onclick="createPdf({{ project.pk }})" type="button"
+                                           class="btn btn-primary btn-sm"><i class="bi bi-file-earmark-pdf-fill"></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- Table end -->
+                    </div>
+
+                    <!-- Pagination start -->
+                    {% include 'pagination.html' with items=items %}
+                    <!-- Pagination end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Table End -->
+
+    {% block dashboard %}
+    {% endblock %}
+
+    <script>
+        function createPdf(projectId) {
+            fetch(`/project/${projectId}/create-pdf/`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка при создании PDF');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `project_${projectId}_plan.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+        }
+    </script>
+
+{% endblock %}

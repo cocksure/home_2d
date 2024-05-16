@@ -1,5 +1,7 @@
 from django import forms
-from info.models import Group, Brand, Firm, Material, Unit, Project
+from django.forms import inlineformset_factory
+
+from info.models import Group, Brand, Firm, Material, Unit, Project, ProjectMaterial
 
 
 class GroupForm(forms.ModelForm):
@@ -55,7 +57,7 @@ class MaterialForm(forms.ModelForm):
 class ProjectForm(forms.ModelForm):
 	class Meta:
 		model = Project
-		exclude = ['wall_area', 'ROOM_area', 'LIVING_ROOM_area']  # isklyuchit' polya iz formy
+		exclude = ['wall_area', 'ROOM_area', 'LIVING_ROOM_area']
 
 		fields = '__all__'
 
@@ -68,17 +70,13 @@ class ProjectForm(forms.ModelForm):
 			'width_b': '',
 			'width_c': '',
 			'width_d': '',
-			'interior_walls': 'Внутренние стены',
-			'external_walls': 'Внешние стены',
-			'floor': 'Пол',
-			'baseboard': 'Паталок',
+
 		}
 		widgets = {
 			'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название'}),
 			'firm': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Фирма'}),
 			'height': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Высота'}),
 			'project_type': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Тип проекта'}),
-			'material': forms.SelectMultiple(attrs={'class': 'form-select', 'placeholder': 'Материал'}),
 			'width_a': forms.NumberInput(
 				attrs={'class': 'form-control', 'id': 'id_width_a', 'placeholder': 'Ширина A'}),
 			'width_b': forms.NumberInput(
@@ -87,8 +85,24 @@ class ProjectForm(forms.ModelForm):
 				attrs={'class': 'form-control', 'id': 'id_width_c', 'placeholder': 'Ширина C'}),
 			'width_d': forms.NumberInput(
 				attrs={'class': 'form-control', 'id': 'id_width_d', 'placeholder': 'Ширина D'}),
-			'interior_walls': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
-			'external_walls': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
-			'floor': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
-			'baseboard': forms.CheckboxInput(attrs={'class': 'form-check-input custom-checkbox'}),
+
 		}
+
+
+class ProjectMaterialForm(forms.ModelForm):
+	class Meta:
+		model = ProjectMaterial
+		fields = ['material', 'type_material']
+		widgets = {
+			'material': forms.Select(
+				attrs={'class': 'form-select material mb-3', 'id': 'material', 'name': 'material', }),
+			'type_material': forms.Select(
+				attrs={'class': 'form-select type_material', 'id': 'type_material', 'name': 'type_material', }),
+		}
+
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['material'].queryset = Material.objects.all()
+
+
+ProjectMaterialFormSet = inlineformset_factory(Project, ProjectMaterial, form=ProjectMaterialForm, extra=1)

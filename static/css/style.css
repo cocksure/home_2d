@@ -308,7 +308,16 @@
 }
 
 
+.pagination .page-item.active .page-link {
+    background-color: ghostwhite;
+    border-color: darkgray;
+    color: black;
+}
 
+.pagination .page-item .page-link {
+    background-color: lightslategray;
+    color: white;
+}
 
 
 

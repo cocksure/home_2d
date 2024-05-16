@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+
+    <title>Project Plan</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .plan-img {
+            max-width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 w-100 text-center">
+            <img src="{% static 'img/Kushan_logo.png' %}" alt="Логотип" class="img-fluid my-4">
+        </div>
+    </div>
+    <h1 class="mt-4">Объект плана: {{ project.name }}</h1>
+    <h2 class="mt-4">Чертеж плана</h2>
+    <img src="{{ project_plan_image }}" alt="Чертеж плана" class="plan-img">
+    {% for detail in details %}
+        <p>{{ detail }}</p>
+    {% endfor %}
+    <h2 class="mt-4 border-2 ">Детали проекта</h2>
+    {% if project.project_type == project.ProjectType.WALL %}
+        <p>Высота: {{ project.height }} м</p>
+        <p>Ширина A: {{ project.width_a }} м</p>
+        <p>Общая площадь стен: {{ project.wall_area }} м²</p>
+    {% elif project.project_type == project.ProjectType.ROOM %}
+        <p>Ширина A: {{ project.width_a }} м</p>
+        <p>Ширина B: {{ project.width_b }} м</p>
+        <p>Площадь комнаты: {{ project.room_area }} м²</p>
+    {% elif project.project_type == project.ProjectType.LIVING_ROOM %}
+        <p>Ширина A: {{ project.width_a }} м</p>
+        <p>Ширина B: {{ project.width_b }} м</p>
+        <p>Ширина C: {{ project.width_c }} м</p>
+        <p>Ширина D: {{ project.width_d }} м</p>
+        <p>Площадь гостиной: {{ project.living_room_area }} м²</p>
+    {% endif %}
+
+
+    <h2 class="mt-4">Материалы проекта</h2>
+    <ul style="font-size: 15px">
+        {% for material in project_materials %}
+            <li>{{ material.material.name }}
+                ({{ material.type_material }}): {{ material.summa }} {{ material.material.unit|safe }}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
