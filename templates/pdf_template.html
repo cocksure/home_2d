@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
 
     <title>Project Plan</title>
@@ -14,54 +13,130 @@
             font-family: 'Open Sans', sans-serif;
         }
 
-        .plan-img {
-            max-width: 100%;
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 2px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #c8f5f3;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 
 </head>
 <body>
 <div class="container">
-    <div class="row">
-        <div class="col-md-12 w-100 text-center">
-            <img src="{% static 'img/Kushan_logo.png' %}" alt="Логотип" class="img-fluid my-4">
-        </div>
-    </div>
-    <h1 class="mt-4">Объект плана: {{ project.name }}</h1>
-    <h2 class="mt-4">Чертеж плана</h2>
+    <h1>Объект плана: {{ project.name }}</h1>
     <img src="{{ project_plan_image }}" alt="Чертеж плана" class="plan-img">
     {% for detail in details %}
         <p>{{ detail }}</p>
     {% endfor %}
     <h2 class="mt-4 border-2 ">Детали проекта</h2>
     {% if project.project_type == project.ProjectType.WALL %}
-        <p>Высота: {{ project.height }} м</p>
-        <p>Ширина A: {{ project.width_a }} м</p>
-        <p>Общая площадь стен: {{ project.wall_area }} м²</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>Высота</td>
+                <td>{{ project.height }} м</td>
+            </tr>
+            <tr>
+                <td>Ширина A</td>
+                <td>{{ project.width_a }} м</td>
+            </tr>
+            <tr>
+                <td>Общая площадь стен</td>
+                <td>{{ project.wall_area }} м²</td>
+            </tr>
+        </table>
     {% elif project.project_type == project.ProjectType.ROOM %}
-        <p>Ширина A: {{ project.width_a }} м</p>
-        <p>Ширина B: {{ project.width_b }} м</p>
-        <p>Площадь комнаты: {{ project.room_area }} м²</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>Ширина A</td>
+                <td>{{ project.width_a }} м</td>
+            </tr>
+            <tr>
+                <td>Ширина B</td>
+                <td>{{ project.width_b }} м</td>
+            </tr>
+            <tr>
+                <td>Площадь комнаты</td>
+                <td>{{ project.room_area }} м²</td>
+            </tr>
+        </table>
     {% elif project.project_type == project.ProjectType.LIVING_ROOM %}
-        <p>Ширина A: {{ project.width_a }} м</p>
-        <p>Ширина B: {{ project.width_b }} м</p>
-        <p>Ширина C: {{ project.width_c }} м</p>
-        <p>Ширина D: {{ project.width_d }} м</p>
-        <p>Площадь гостиной: {{ project.living_room_area }} м²</p>
+        <table>
+            <tr>
+                <th>Параметр</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>Ширина A</td>
+                <td>{{ project.width_a }} м</td>
+            </tr>
+            <tr>
+                <td>Ширина B</td>
+                <td>{{ project.width_b }} м</td>
+            </tr>
+            <tr>
+                <td>Ширина C</td>
+                <td>{{ project.width_c }} м</td>
+            </tr>
+            <tr>
+                <td>Ширина D</td>
+                <td>{{ project.width_d }} м</td>
+            </tr>
+            <tr>
+                <td>Площадь гостиной</td>
+                <td>{{ project.living_room_area }} м²</td>
+            </tr>
+        </table>
     {% endif %}
 
 
-    <h2 class="mt-4">Материалы проекта</h2>
-    <ul style="font-size: 15px">
+
+    <h2>Материалы проекта</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Название материала</th>
+            <th>Тип материала</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for material in project_materials %}
-            <li>{{ material.material.name }}
-                ({{ material.type_material }}): {{ material.summa }} {{ material.material.unit|safe }}</li>
+            <tr>
+                <td>{{ material.material.name }}</td>
+                <td>{{ material.type_material }}</td>
+                <td>{{ material.summa }} {{ material.material.unit }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+        </tbody>
+    </table>
+
 
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </body>
 </html>

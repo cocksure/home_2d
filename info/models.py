@@ -88,6 +88,18 @@ class Project(models.Model):
 										 verbose_name='Площадь потолка D')
 
 	def save(self, *args, **kwargs):
+		# Convert dimensions from millimeters to meters if they are not None
+		if self.height is not None:
+			self.height /= 100
+		if self.width_a is not None:
+			self.width_a /= 100
+		if self.width_b is not None:
+			self.width_b /= 100
+		if self.width_c is not None:
+			self.width_c /= 100
+		if self.width_d is not None:
+			self.width_d /= 100
+
 		if self.project_type == Project.ProjectType.WALL and self.width_a:
 			self.wall_area = self.height * self.width_a
 			self.wall_area_a = None
